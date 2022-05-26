@@ -1,14 +1,17 @@
-const http = new coreHTTP;
+const http = new coreHTTP();
 
 // Block Variables
 let theList = [];
 
 // setup selectors
 const result = document.querySelector(".result");
-const input =  document.querySelector("#listitem");
-const formAlert =  document.querySelector(".form-alert");
-const addButton =  document.querySelector(".add-btn");
-const delButton =  document.querySelector(".del-btn");
+const input = document.querySelector("#listitem");
+const formAlert = document.querySelector(".form-alert");
+const addButton = document.querySelector(".add-btn");
+const delButton = document.querySelector(".del-btn");
+
+// If frontend is not running on port 5000 uncomment this code:
+/*const baseUrl = document.location.protocol + "//" + document.location.hostname + ":5000"; */
 
 // Listeners
 addButton.addEventListener("click", httpPost);
@@ -25,21 +28,24 @@ function ShowList() {
 }
 
 async function GetList() {
+  const data = await http.get(`${baseUrl}/api`);
 
+  theList = data;
+
+  ShowList();
 }
 
 async function WriteList() {
-
+  theList.push(input.value);
 }
 
 /* Listener Functions */
 async function httpPost(e) {
-
+  await WriteList();
+  await http.post(`${baseUrl}/api`, theList);
 }
 
-function httpDelete(e) {
-
-}
+function httpDelete(e) {}
 
 // Loading functions
 function showLoading() {

@@ -2,13 +2,21 @@ const fs = require("fs");
 
 async function ReadData() {
   try {
-    fs.readFile("./listdata.json");
-  } catch (error) {}
+    let rawdata = fs.readFileSync("listdata.json");
+    let data = JSON.parse(rawdata);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function WriteData(dataOut) {
   try {
-  } catch (error) {}
+    let data = JSON.stringify(dataOut);
+    fs.writeFileSync("listdata.json", data);
+  } catch (error) {
+    throw err;
+  }
 }
 
 exports.ReadData = ReadData;

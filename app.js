@@ -10,9 +10,17 @@ const app = express();
 app.use(express.static("./Client"));
 app.use(express.json());
 
-app.get("/api", async (req, res) => {});
+app.get("/api", async (req, res) => {
+  const data = await fm.ReadData();
 
-app.post("/api", async (req, res) => {});
+  res.send(data);
+});
+
+app.post("/api", async (req, res) => {
+  await fm.WriteData(req.body);
+
+  res.send({ msg: "Success" });
+});
 
 // page not found route
 app.all("*", (req, res) => {
@@ -20,7 +28,7 @@ app.all("*", (req, res) => {
 });
 
 const appName = "My List";
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`App ${appName} is running on port ${port}`);
